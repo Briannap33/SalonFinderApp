@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Salon Finder App</string>
-    <string name="button_addPlacemark">Add Placemark</string>
+    <string name="app_name">Salon</string>
+    <string name="button_addSalon">Add Salon</string>
+    <string name="hint_salonName">Salon Name</string>
 </resources>
