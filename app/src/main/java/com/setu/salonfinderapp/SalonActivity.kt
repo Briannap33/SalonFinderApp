@@ -17,6 +17,6 @@ class SalonActivity : AppCompatActivity() {
             insets
         }
     }
-
+}
 
 
