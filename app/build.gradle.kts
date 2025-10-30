@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.setu.salonFinderApp"
+    namespace = "com.setu.salonfinderApp"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.setu.salonFinderApp"
+        applicationId = "com.setu.salonfinderApp"
         minSdk = 30
         targetSdk = 36
         versionCode = 1

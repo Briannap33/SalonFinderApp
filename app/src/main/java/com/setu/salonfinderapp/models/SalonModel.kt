@@ -1,4 +1,4 @@
 package com.setu.salonfinderapp.models
 
-data class salonModel(var name: String = "",
+data class SalonModel(var name: String = "",
                       var description: String = "")

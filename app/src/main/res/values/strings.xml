@@ -3,5 +3,6 @@
     <string name="button_addSalon">Add Salon</string>
     <string name="hint_salonName">Salon Name</string>
     <string name="hint_salonDescription">Description </string>
+    <string name="menu_addSalon">Add</string>
 
 </resources>
