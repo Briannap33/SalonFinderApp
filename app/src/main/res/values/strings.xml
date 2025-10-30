@@ -2,4 +2,6 @@
     <string name="app_name">Salon</string>
     <string name="button_addSalon">Add Salon</string>
     <string name="hint_salonName">Salon Name</string>
+    <string name="hint_salonDescription">Description </string>
+
 </resources>

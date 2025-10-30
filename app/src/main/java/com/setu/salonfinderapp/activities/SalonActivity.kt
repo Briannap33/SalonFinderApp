@@ -10,9 +10,10 @@ import timber.log.Timber
 import timber.log.Timber.Forest.i
 
 class SalonActivity : AppCompatActivity() {
+    val salons = ArrayList<salonModel>()
+    var salon = salonModel()
 
     private lateinit var binding: ActivitySalonBinding
-    var salon = salonModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +22,16 @@ class SalonActivity : AppCompatActivity() {
 
 
         Timber.Forest.plant(Timber.DebugTree())
-        Timber.Forest.i("Salon Activity started..")
+        i("Salon Activity started..")
 
         binding.btnAdd.setOnClickListener() {
             salon.name = binding.salonName.text.toString()
+            salon.description = binding.description.text.toString()
             if (salon.name.isNotEmpty()) {
-                i("add Button Pressed: $salon.name")
+                salons.add(salon)
+                i("add Button Pressed: ${salon}")
+                for (i in salons.indices)
+                { i("Salon[$i]:${this.salons[i]}") }
             }
             else {
                 Snackbar
