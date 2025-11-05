@@ -21,6 +21,8 @@ class SalonListActivity : AppCompatActivity() {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonListBinding
+    private lateinit var adapter: SalonAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +33,12 @@ class SalonListActivity : AppCompatActivity() {
 
         app = application as MainApp
 
-        val layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = SalonAdapter(app.salonList)
+        adapter = SalonAdapter(app.salonList)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+        binding.btnRemoveAll.setOnClickListener {
+            adapter.removeAllItems()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -60,13 +65,15 @@ class SalonListActivity : AppCompatActivity() {
             }
         }
 
-    class SalonAdapter(private var salonList: List<SalonModel>) :
+    class SalonAdapter(private var salonList: MutableList<SalonModel>) :
         RecyclerView.Adapter<SalonAdapter.MainHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
             val binding = CardSalonBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
-            return MainHolder(binding)
+            return MainHolder(binding) { position ->
+                removeItem(position)
+            }
         }
 
         override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -76,13 +83,27 @@ class SalonListActivity : AppCompatActivity() {
 
         override fun getItemCount(): Int = salonList.size
 
-        class MainHolder(private val binding: CardSalonBinding) :
+        fun removeItem(position: Int) {
+            salonList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+
+        fun removeAllItems() {
+            salonList.clear()
+            notifyDataSetChanged()
+        }
+
+        class MainHolder(private val binding: CardSalonBinding, private val onDeleteClick: (Int) -> Unit) :
             RecyclerView.ViewHolder(binding.root) {
 
             fun bind(salonEntry: SalonModel) {
                 binding.salonName.text = salonEntry.name
                 binding.description.text = salonEntry.description
+                binding.btnDelete.setOnClickListener {
+                    onDeleteClick(adapterPosition)
+                }
             }
+
         }
     }
 }
