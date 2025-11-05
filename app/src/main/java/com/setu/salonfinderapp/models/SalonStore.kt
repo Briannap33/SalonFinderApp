@@ -1,4 +1,8 @@
 package com.setu.salonfinderapp.models
 
-class SalonStore {
+interface SalonStore {
+    fun findAll(): List<SalonModel>
+    fun create(salon: SalonModel)
+    fun update(salon: SalonModel)
+
 }
