@@ -12,7 +12,6 @@ import com.setu.salonfinderapp.models.SalonModel
 import timber.log.Timber.Forest.i
 
 
-
 class SalonActivity : AppCompatActivity() {
     var salonEntry = SalonModel()
     lateinit var app: MainApp
@@ -31,20 +30,27 @@ class SalonActivity : AppCompatActivity() {
             binding.salonName.setText(salonEntry.name)
             binding.description.setText(salonEntry.description)
         }
-        binding.btnAdd.setOnClickListener() {
+        binding.btnAdd.setOnClickListener {
             salonEntry.name = binding.salonName.text.toString()
             salonEntry.description = binding.description.text.toString()
+
             if (salonEntry.name.isNotEmpty()) {
-                app.salonList.add(salonEntry.copy())
+                if (intent.hasExtra("salon_edit")) {
+                    // Editing: directly update the actual model
+                    app.salonList.update(salonEntry)
+                } else {
+                    // Adding: use copy() so a new ID is generated
+                    app.salonList.create(salonEntry.copy())
+                }
                 setResult(RESULT_OK)
                 finish()
-            }
-            else {
-                Snackbar.make(it,"Please Enter a Name", Snackbar.LENGTH_LONG)
-                    .show()
+            } else {
+                Snackbar.make(it, "Please Enter a Name", Snackbar.LENGTH_LONG).show()
             }
         }
+
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_salon, menu)
         return super.onCreateOptionsMenu(menu)
@@ -52,7 +58,9 @@ class SalonActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_cancel -> { finish() }
+            R.id.item_cancel -> {
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }

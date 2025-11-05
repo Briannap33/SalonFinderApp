@@ -1,28 +1,29 @@
 package com.setu.salonfinderapp.models
 
 import timber.log.Timber.Forest.i
-var lastId = 0L
 
-internal fun getId(): Long {
+private var lastId = 0L
+
+private fun getNextId(): Long {
     return lastId++
 }
 
-class SalonMemStore : SalonStore {
+class SalonMemStore {
 
-    val salons = ArrayList<SalonModel>()
+    val salonList = ArrayList<SalonModel>()
 
-    override fun findAll(): List<SalonModel> {
-        return salons
+    fun findAll(): List<SalonModel> {
+        return salonList
     }
 
-    override fun create(salon: SalonModel) {
-        salon.id = getId()
-        salons.add(salon)
+    fun create(salon: SalonModel) {
+        salon.id = getNextId()
+        salonList.add(salon)
         logAll()
     }
 
-    override fun update(salon: SalonModel) {
-        val foundSalon: SalonModel? = salons.find { it.id == salon.id }
+    fun update(salon: SalonModel) {
+        val foundSalon = salonList.find { s -> s.id == salon.id }
         if (foundSalon != null) {
             foundSalon.name = salon.name
             foundSalon.description = salon.description
@@ -31,11 +32,16 @@ class SalonMemStore : SalonStore {
     }
 
     fun delete(salon: SalonModel) {
-        salons.removeIf { it.id == salon.id }
+        salonList.remove(salon)
+        logAll()
+    }
+
+    fun deleteAll() {
+        salonList.clear()
         logAll()
     }
 
     private fun logAll() {
-        salons.forEach { i("$it") }
+        salonList.forEach { i("$it") }
     }
 }

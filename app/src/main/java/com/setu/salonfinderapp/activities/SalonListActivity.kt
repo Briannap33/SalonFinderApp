@@ -33,11 +33,13 @@ class SalonListActivity : AppCompatActivity() {
 
         app = application as MainApp
 
-        adapter = SalonAdapter(app.salonList)
+        adapter = SalonAdapter(app.salonList.findAll().toMutableList())
+        binding.recyclerView.adapter?.notifyItemRangeChanged(0, app.salonList.findAll().size)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
         binding.btnRemoveAll.setOnClickListener {
             adapter.removeAllItems()
+            adapter.updateList(app.salonList.findAll())
         }
     }
 
@@ -57,11 +59,9 @@ class SalonListActivity : AppCompatActivity() {
     }
 
     private val getResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                binding.recyclerView.adapter?.notifyItemRangeChanged(0, app.salonList.size)
+                adapter.updateList(app.salonList.findAll())
             }
         }
 
@@ -74,6 +74,12 @@ class SalonListActivity : AppCompatActivity() {
             return MainHolder(binding) { position ->
                 removeItem(position)
             }
+        }
+
+        fun updateList(newList: List<SalonModel>) {
+            salonList.clear()
+            salonList.addAll(newList)
+            notifyDataSetChanged()
         }
 
         override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -100,7 +106,10 @@ class SalonListActivity : AppCompatActivity() {
             notifyDataSetChanged()
         }
 
-        class MainHolder(private val binding: CardSalonBinding, private val onDeleteClick: (Int) -> Unit) :
+        class MainHolder(
+            private val binding: CardSalonBinding,
+            private val onDeleteClick: (Int) -> Unit
+        ) :
             RecyclerView.ViewHolder(binding.root) {
 
             fun bind(salonEntry: SalonModel) {
