@@ -79,6 +79,13 @@ class SalonListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: MainHolder, position: Int) {
             val salonEntry = salonList[holder.adapterPosition]
             holder.bind(salonEntry)
+            holder.itemView.setOnClickListener {
+                val intent = Intent(holder.itemView.context, SalonActivity::class.java)
+                intent.putExtra("salonIndex", holder.adapterPosition)
+                intent.putExtra("salonName", salonEntry.name)
+                intent.putExtra("salonDescription", salonEntry.description)
+                (holder.itemView.context as Activity).startActivityForResult(intent, 100)
+            }
         }
 
         override fun getItemCount(): Int = salonList.size

@@ -14,7 +14,7 @@ import timber.log.Timber.Forest.i
 
 
 class SalonActivity : AppCompatActivity() {
-    val salonEntry = SalonModel()
+    var salonEntry = SalonModel()
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonBinding
 
@@ -24,9 +24,13 @@ class SalonActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarAdd)
 
-
         app = application as MainApp
 
+        if (intent.hasExtra("salon_edit")) {
+            salonEntry = intent.extras?.getParcelable("salon_edit")!!
+            binding.salonName.setText(salonEntry.name)
+            binding.description.setText(salonEntry.description)
+        }
         binding.btnAdd.setOnClickListener() {
             salonEntry.name = binding.salonName.text.toString()
             salonEntry.description = binding.description.text.toString()

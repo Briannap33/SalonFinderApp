@@ -1,4 +1,11 @@
 package com.setu.salonfinderapp.models
 
-data class SalonModel(var name: String = "",
-                      var description: String = "")
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class PlacemarkModel(var id: Long = 0,
+                          var name: String = "",
+                          var description: String = "") : Parcelable
+
+
