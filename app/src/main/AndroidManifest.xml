@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.salon"
         tools:targetApi="34">
-        <activity android:name="com.setu.salonfinderapp.activities.SalonListActivity" android:exported="true">
+
+        <activity
+            android:name="com.setu.salonfinderapp.activities.SalonListActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,12 +25,14 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name="com.setu.salonfinderapp.activities.SalonActivity">
 
-        <meta-data android:name="android.app.lib_name"
+        <activity
+            android:name="com.setu.salonfinderapp.activities.SalonActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-    </application>
 
+    </application>
 </manifest>

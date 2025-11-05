@@ -4,5 +4,5 @@
     <string name="hint_salonName">Salon Name</string>
     <string name="hint_salonDescription">Description </string>
     <string name="menu_addSalon">Add</string>
-
+    <string name="menu_cancelSalon">Cancel</string>
 </resources>
