@@ -58,8 +58,7 @@ class SalonListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    private val getResult =
+    val getResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 adapter.updateList(app.salonList.findAll())
@@ -88,10 +87,11 @@ class SalonListActivity : AppCompatActivity() {
             holder.bind(salonEntry)
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, SalonActivity::class.java)
-                intent.putExtra("salonIndex", holder.adapterPosition)
-                intent.putExtra("salonName", salonEntry.name)
-                intent.putExtra("salonDescription", salonEntry.description)
-                (holder.itemView.context as Activity).startActivityForResult(intent, 100)
+                intent.putExtra("salon_edit", salonEntry)
+                //  intent.putExtra("salonIndex", holder.adapterPosition)
+                //  intent.putExtra("salonName", salonEntry.name)
+                // intent.putExtra("salonDescription", salonEntry.description)
+                (holder.itemView.context as SalonListActivity).getResult.launch(intent)
             }
         }
 
