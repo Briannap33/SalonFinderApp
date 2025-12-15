@@ -40,6 +40,9 @@ class SalonActivity : AppCompatActivity() {
 
         i("Salon Activity started...")
 
+        binding.placemarkLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
 
 
         if (intent.hasExtra("salon_edit")) {
@@ -81,6 +84,7 @@ class SalonActivity : AppCompatActivity() {
         }
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_salon, menu)
