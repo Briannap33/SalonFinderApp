@@ -33,13 +33,12 @@ class SalonListActivity : AppCompatActivity() {
 
         app = application as MainApp
 
-        adapter = SalonAdapter(app.salonList.findAll().toMutableList())
+        adapter = SalonAdapter(app.salonList.findAll().toMutableList(), app)
         binding.recyclerView.adapter?.notifyItemRangeChanged(0, app.salonList.findAll().size)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
         binding.btnRemoveAll.setOnClickListener {
             adapter.removeAllItems()
-            adapter.updateList(app.salonList.findAll())
         }
     }
 
@@ -65,7 +64,7 @@ class SalonListActivity : AppCompatActivity() {
             }
         }
 
-    class SalonAdapter(private var salonList: MutableList<SalonModel>) :
+    class SalonAdapter(private var salonList: MutableList<SalonModel>, private val app: MainApp) :
         RecyclerView.Adapter<SalonAdapter.MainHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {

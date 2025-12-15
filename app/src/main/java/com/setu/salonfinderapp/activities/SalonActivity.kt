@@ -36,10 +36,8 @@ class SalonActivity : AppCompatActivity() {
 
             if (salonEntry.name.isNotEmpty()) {
                 if (intent.hasExtra("salon_edit")) {
-                    // Editing: directly update the actual model
                     app.salonList.update(salonEntry)
                 } else {
-                    // Adding: use copy() so a new ID is generated
                     app.salonList.create(salonEntry.copy())
                 }
                 setResult(RESULT_OK)
