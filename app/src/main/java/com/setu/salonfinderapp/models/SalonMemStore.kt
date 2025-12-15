@@ -23,10 +23,11 @@ class SalonMemStore {
     }
 
     fun update(salon: SalonModel) {
-        val foundSalon = salonList.find { s -> s.id == salon.id }
+        val foundSalon: SalonModel? = salonList.find { s -> s.id == salon.id }
         if (foundSalon != null) {
             foundSalon.name = salon.name
             foundSalon.description = salon.description
+            foundSalon.image = salon.image
             logAll()
         }
     }

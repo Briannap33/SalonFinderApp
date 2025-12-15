@@ -15,11 +15,13 @@ import androidx.appcompat.app.AlertDialog
 import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivitySalonListBinding
 import com.setu.salonfinderApp.databinding.CardSalonBinding
+import com.setu.salonfinderapp.adapters.SalonAdapter
+import com.setu.salonfinderapp.adapters.SalonListener
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
 
 
-class SalonListActivity : AppCompatActivity() {
+class SalonListActivity : AppCompatActivity(), SalonListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonListBinding
@@ -35,16 +37,19 @@ class SalonListActivity : AppCompatActivity() {
 
         app = application as MainApp
 
-        adapter = SalonAdapter(app.salonList.findAll().toMutableList(), app)
-        binding.recyclerView.adapter?.notifyItemRangeChanged(0, app.salonList.findAll().size)
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        val layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = layoutManager
+        adapter = SalonAdapter(app.salonList.findAll().toMutableList(), this)
+
         binding.recyclerView.adapter = adapter
+
         binding.btnRemoveAll.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Delete All Salons")
                 .setMessage("Are you sure you want to delete all salons in your list?")
                 .setPositiveButton("Delete") { _, _ ->
-                    adapter.removeAllItems()
+                    app.salonList.deleteAll()
+                    adapter.refresh(app.salonList.findAll())
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -65,77 +70,38 @@ class SalonListActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     val getResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                adapter.updateList(app.salonList.findAll())
+                adapter.refresh(app.salonList.findAll())
+
+            }
+}
+    override fun onSalonClick(salonentry: SalonModel) {
+        val launcherIntent = Intent(this, SalonActivity::class.java)
+        launcherIntent.putExtra("salon_edit", salonentry)
+        getClickResult.launch(launcherIntent)
+    }
+
+    private val getClickResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == RESULT_OK) {
+                (binding.recyclerView.adapter)?.
+                notifyItemRangeChanged(0,app.salonList.findAll().size)
             }
         }
-
-    class SalonAdapter(private var salonList: MutableList<SalonModel>, private val app: MainApp) :
-        RecyclerView.Adapter<SalonAdapter.MainHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-            val binding = CardSalonBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
-            return MainHolder(binding) { position ->
-                removeItem(position)
+    override fun onSalonDelete(salonentry: SalonModel) {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Salon")
+            .setMessage("Are you sure you want to delete this salon?")
+            .setPositiveButton("Delete") { _, _ ->
+                app.salonList.delete(salonentry)
+                adapter.refresh(app.salonList.findAll())
             }
-        }
-
-        fun updateList(newList: List<SalonModel>) {
-            salonList.clear()
-            salonList.addAll(newList)
-            notifyDataSetChanged()
-        }
-
-        override fun onBindViewHolder(holder: MainHolder, position: Int) {
-            val salonEntry = salonList[holder.adapterPosition]
-            holder.bind(salonEntry)
-            holder.itemView.setOnClickListener {
-                val intent = Intent(holder.itemView.context, SalonActivity::class.java)
-                intent.putExtra("salon_edit", salonEntry)
-                (holder.itemView.context as SalonListActivity).getResult.launch(intent)
-            }
-        }
-
-        override fun getItemCount(): Int = salonList.size
-
-        fun removeItem(position: Int) {
-            if (position < 0 || position >= salonList.size) return
-            val salon = salonList[position]
-            app.salonList.delete(salon)
-            salonList.removeAt(position)
-            notifyItemRemoved(position)
-        }
-
-        fun removeAllItems() {
-            app.salonList.deleteAll()
-            salonList.clear()
-            notifyDataSetChanged()
-        }
-
-        class MainHolder(
-            private val binding: CardSalonBinding,
-            private val onDeleteClick: (Int) -> Unit
-        ) :
-            RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(salonEntry: SalonModel) {
-                binding.salonName.text = salonEntry.name
-                binding.description.text = salonEntry.description
-                binding.btnDelete.setOnClickListener {
-                    AlertDialog.Builder(binding.root.context)
-                        .setTitle("Delete this Salon?")
-                        .setMessage("Are you sure you want to delete this salon?")
-                        .setPositiveButton("Delete") { _, _ ->
-                            onDeleteClick(adapterPosition)
-                        }
-                        .setNegativeButton("Cancel", null)
-                        .show()
-                }
-            }
-
-        }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

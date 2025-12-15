@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
@@ -47,7 +48,13 @@ class SalonActivity : AppCompatActivity() {
             binding.salonName.setText(salonEntry.name)
             binding.description.setText(salonEntry.description)
             binding.btnAdd.setText(R.string.save_salon)
+            Picasso.get()
+                .load(salonEntry.image)
+                .into(binding.salonImage)
+            if (salonEntry.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_salon_image)
 
+            }
         }
         binding.chooseImage.setOnClickListener {
             i("Select Salon Image")
@@ -100,6 +107,7 @@ class SalonActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(salonEntry.image)
                                 .into(binding.salonImage)
+                            binding.chooseImage.setText(R.string.change_salon_image)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
