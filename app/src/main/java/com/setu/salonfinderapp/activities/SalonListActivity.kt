@@ -108,6 +108,7 @@ class SalonListActivity : AppCompatActivity() {
         }
 
         fun removeAllItems() {
+            app.salonList.deleteAll()
             salonList.clear()
             notifyDataSetChanged()
         }
