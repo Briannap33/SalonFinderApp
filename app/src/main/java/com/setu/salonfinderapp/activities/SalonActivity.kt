@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivitySalonBinding
+import com.setu.salonfinderapp.helpers.showImagePicker
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
 import timber.log.Timber.Forest.i
@@ -16,6 +20,8 @@ class SalonActivity : AppCompatActivity() {
     var salonEntry = SalonModel()
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonBinding
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +30,15 @@ class SalonActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
+        registerImagePickerCallback()
+
+
 
         app = application as MainApp
 
         i("Salon Activity started...")
+
+
 
         if (intent.hasExtra("salon_edit")) {
             edit = true
@@ -36,6 +47,10 @@ class SalonActivity : AppCompatActivity() {
             binding.description.setText(salonEntry.description)
             binding.btnAdd.setText(R.string.save_salon)
 
+        }
+        binding.chooseImage.setOnClickListener {
+            i("Select Salon Image")
+            showImagePicker(imageIntentLauncher)
         }
         binding.btnAdd.setOnClickListener {
             salonEntry.name = binding.salonName.text.toString()
@@ -54,9 +69,7 @@ class SalonActivity : AppCompatActivity() {
                 setResult(RESULT_OK)
                 finish()
             }
-            binding.chooseImage.setOnClickListener {
-                i("Select Salon Image")
-            }
+
         }
 
     }
@@ -73,6 +86,20 @@ class SalonActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 }
 
