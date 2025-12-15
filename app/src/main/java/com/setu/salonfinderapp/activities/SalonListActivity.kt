@@ -103,8 +103,6 @@ class SalonListActivity : AppCompatActivity() {
             app.salonList.delete(salon)
             salonList.removeAt(position)
             notifyItemRemoved(position)
-
-
         }
 
         fun removeAllItems() {
