@@ -11,9 +11,7 @@
     <string name="select_salon_image">Select salon image</string>
     <string name="change_salon_image">Change salon image</string>
     <string name="button_location">Set Salon Location</string>
-
-
-
+    <string name="title_activity_map">MapActivity</string>
 
 
 </resources>
