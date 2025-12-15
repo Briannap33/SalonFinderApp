@@ -27,6 +27,8 @@ class SalonActivity : AppCompatActivity() {
 
         app = application as MainApp
 
+        i("Salon Activity started...")
+
         if (intent.hasExtra("salon_edit")) {
             edit = true
             salonEntry = intent.extras?.getParcelable("salon_edit")!!
@@ -48,8 +50,12 @@ class SalonActivity : AppCompatActivity() {
                 } else {
                     app.salonList.create(salonEntry.copy())
                 }
+                i("add Button Pressed: $salonEntry")
                 setResult(RESULT_OK)
                 finish()
+            }
+            binding.chooseImage.setOnClickListener {
+                i("Select Salon Image")
             }
         }
 
