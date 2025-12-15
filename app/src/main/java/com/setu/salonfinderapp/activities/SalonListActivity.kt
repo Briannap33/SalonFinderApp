@@ -11,11 +11,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AlertDialog
 import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivitySalonListBinding
 import com.setu.salonfinderApp.databinding.CardSalonBinding
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
+
 
 class SalonListActivity : AppCompatActivity() {
 
@@ -96,8 +98,13 @@ class SalonListActivity : AppCompatActivity() {
         override fun getItemCount(): Int = salonList.size
 
         fun removeItem(position: Int) {
+            if (position < 0 || position >= salonList.size) return
+            val salon = salonList[position]
+            app.salonList.delete(salon)
             salonList.removeAt(position)
             notifyItemRemoved(position)
+
+
         }
 
         fun removeAllItems() {
@@ -115,7 +122,14 @@ class SalonListActivity : AppCompatActivity() {
                 binding.salonName.text = salonEntry.name
                 binding.description.text = salonEntry.description
                 binding.btnDelete.setOnClickListener {
-                    onDeleteClick(adapterPosition)
+                    AlertDialog.Builder(binding.root.context)
+                        .setTitle("Delete this Salon?")
+                        .setMessage("Are you sure you want to delete this salon?")
+                        .setPositiveButton("Delete") { _, _ ->
+                            onDeleteClick(adapterPosition)
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
                 }
             }
 
