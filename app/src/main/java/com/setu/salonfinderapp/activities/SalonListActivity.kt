@@ -40,7 +40,14 @@ class SalonListActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
         binding.btnRemoveAll.setOnClickListener {
-            adapter.removeAllItems()
+            AlertDialog.Builder(this)
+                .setTitle("Delete All Salons")
+                .setMessage("Are you sure you want to delete all salons in your list?")
+                .setPositiveButton("Delete") { _, _ ->
+                    adapter.removeAllItems()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 
@@ -88,9 +95,6 @@ class SalonListActivity : AppCompatActivity() {
             holder.itemView.setOnClickListener {
                 val intent = Intent(holder.itemView.context, SalonActivity::class.java)
                 intent.putExtra("salon_edit", salonEntry)
-                //  intent.putExtra("salonIndex", holder.adapterPosition)
-                //  intent.putExtra("salonName", salonEntry.name)
-                // intent.putExtra("salonDescription", salonEntry.description)
                 (holder.itemView.context as SalonListActivity).getResult.launch(intent)
             }
         }
