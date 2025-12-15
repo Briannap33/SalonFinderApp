@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Salon</string>
+    <string name="save_salon">Save Salon</string>
+    <string name="error_enter_name">Please Enter a Name</string>
     <string name="button_addSalon">Add Salon</string>
     <string name="hint_salonName">Salon Name</string>
     <string name="hint_salonDescription">Description </string>
     <string name="menu_addSalon">Add</string>
     <string name="menu_cancelSalon">Cancel</string>
+    <string name="button_addImage"> Add Salon Image</string>
+
+
 </resources>

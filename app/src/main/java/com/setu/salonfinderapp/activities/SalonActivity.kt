@@ -19,31 +19,37 @@ class SalonActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var edit = false
         binding = ActivitySalonBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
 
         if (intent.hasExtra("salon_edit")) {
+            edit = true
             salonEntry = intent.extras?.getParcelable("salon_edit")!!
             binding.salonName.setText(salonEntry.name)
             binding.description.setText(salonEntry.description)
+            binding.btnAdd.setText(R.string.save_salon)
+
         }
         binding.btnAdd.setOnClickListener {
             salonEntry.name = binding.salonName.text.toString()
             salonEntry.description = binding.description.text.toString()
 
-            if (salonEntry.name.isNotEmpty()) {
-                if (intent.hasExtra("salon_edit")) {
-                    app.salonList.update(salonEntry)
+            if (salonEntry.name.isEmpty()) {
+                Snackbar.make(it, getString(R.string.app_name), Snackbar.LENGTH_LONG)
+                    .show()
+            } else {
+                if (edit) {
+                    app.salonList.update(salonEntry.copy())
                 } else {
                     app.salonList.create(salonEntry.copy())
                 }
                 setResult(RESULT_OK)
                 finish()
-            } else {
-                Snackbar.make(it, "Please Enter a Name", Snackbar.LENGTH_LONG).show()
             }
         }
 
@@ -63,4 +69,5 @@ class SalonActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
+
 
