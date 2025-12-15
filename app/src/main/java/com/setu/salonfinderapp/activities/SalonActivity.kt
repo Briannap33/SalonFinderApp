@@ -13,6 +13,7 @@ import com.setu.salonfinderApp.databinding.ActivitySalonBinding
 import com.setu.salonfinderapp.helpers.showImagePicker
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
+import com.squareup.picasso.Picasso
 import timber.log.Timber.Forest.i
 
 
@@ -50,7 +51,7 @@ class SalonActivity : AppCompatActivity() {
         }
         binding.chooseImage.setOnClickListener {
             i("Select Salon Image")
-            showImagePicker(imageIntentLauncher)
+            showImagePicker(this, imageIntentLauncher)
         }
         binding.btnAdd.setOnClickListener {
             salonEntry.name = binding.salonName.text.toString()
@@ -95,6 +96,10 @@ class SalonActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
+                            salonEntry.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(salonEntry.image)
+                                .into(binding.salonImage)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
