@@ -34,13 +34,11 @@ class SalonActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivitySalonBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
-
-
-
 
         app = application as MainApp
 
@@ -70,9 +68,9 @@ class SalonActivity : AppCompatActivity() {
                     .show()
             } else {
                 if (edit) {
-                    app.salonList.update(salonEntry)
+                    app.salonList.update(salonEntry.copy())
                 } else {
-                    app.salonList.create(salonEntry)
+                    app.salonList.create(salonEntry.copy())
                 }
             }
             i("add Button Pressed: $salonEntry")
@@ -111,8 +109,8 @@ class SalonActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_delete -> {
-                app.salonList.delete(salonEntry)
                 setResult(99)
+                app.salonList.delete(salonEntry)
                 finish()
             }
 

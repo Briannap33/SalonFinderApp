@@ -47,8 +47,8 @@ class SalonAdapter(
             binding.description.text = salonEntry.description
             Picasso.get().load(salonEntry.image).resize(200, 200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onSalonClick(salonEntry, adapterPosition) }
+
         }
 
     }
 }
-
