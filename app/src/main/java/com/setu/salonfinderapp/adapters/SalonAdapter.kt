@@ -9,12 +9,14 @@ import com.squareup.picasso.Picasso
 import com.setu.salonfinderapp.models.SalonModel
 
 interface SalonListener {
-    fun onSalonClick(salonentry: SalonModel)
-    fun onSalonDelete(salonentry: SalonModel)
+    fun onSalonClick(salonEntry: SalonModel, position: Int)
+
 }
 
-class SalonAdapter(private var salonlist: MutableList<SalonModel>,
-                   private val listener: SalonListener) :
+class SalonAdapter(
+    private var salonList: MutableList<SalonModel>,
+    private val listener: SalonListener
+) :
     RecyclerView.Adapter<SalonAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -25,29 +27,28 @@ class SalonAdapter(private var salonlist: MutableList<SalonModel>,
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val salonentry = salonlist[holder.adapterPosition]
-        holder.bind(salonentry, listener)
+        val salonEntry = salonList[holder.adapterPosition]
+        holder.bind(salonEntry, listener)
     }
 
-    override fun getItemCount(): Int = salonlist.size
+    override fun getItemCount(): Int = salonList.size
 
     fun refresh(newList: List<SalonModel>) {
-        salonlist.clear()
-        salonlist.addAll(newList)
+        salonList.clear()
+        salonList.addAll(newList)
         notifyDataSetChanged()
     }
-    class MainHolder(private val binding : CardSalonBinding) :
+
+    class MainHolder(private val binding: CardSalonBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(salonentry: SalonModel, listener: SalonListener) {
-            binding.salonName.text = salonentry.name
-            binding.description.text = salonentry.description
-            Picasso.get().load(salonentry.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onSalonClick(salonentry)
-            }
-            binding.btnDelete.setOnClickListener {
-                listener.onSalonDelete(salonentry)
-            }
+        fun bind(salonEntry: SalonModel, listener: SalonListener) {
+            binding.salonName.text = salonEntry.name
+            binding.description.text = salonEntry.description
+            Picasso.get().load(salonEntry.image).resize(200, 200).into(binding.imageIcon)
+            binding.root.setOnClickListener { listener.onSalonClick(salonEntry, adapterPosition) }
         }
+
     }
 }
+

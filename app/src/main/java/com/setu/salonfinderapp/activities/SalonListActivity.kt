@@ -1,5 +1,6 @@
 package com.setu.salonfinderapp.activities
 
+import android.R.id.edit
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -19,11 +20,14 @@ import com.setu.salonfinderapp.adapters.SalonAdapter
 import com.setu.salonfinderapp.adapters.SalonListener
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
+import timber.log.Timber
 
 
 class SalonListActivity : AppCompatActivity(), SalonListener {
 
     lateinit var app: MainApp
+    private var position: Int = 0
+
     private lateinit var binding: ActivitySalonListBinding
     private lateinit var adapter: SalonAdapter
 
@@ -39,10 +43,14 @@ class SalonListActivity : AppCompatActivity(), SalonListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        adapter = SalonAdapter(app.salonList.findAll().toMutableList(), this)
-
+        // binding.recyclerView.adapter =
+        //    SalonAdapter(app.salonList.findAll() as MutableList<SalonModel>, this)
+        adapter = SalonAdapter(
+            app.salonList.findAll().toMutableList(),
+            this
+        )
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
-
         binding.btnRemoveAll.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Delete All Salons")
@@ -53,6 +61,7 @@ class SalonListActivity : AppCompatActivity(), SalonListener {
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
+
         }
     }
 
@@ -66,6 +75,7 @@ class SalonListActivity : AppCompatActivity(), SalonListener {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, SalonActivity::class.java)
                 getResult.launch(launcherIntent)
+                return true
             }
         }
         return super.onOptionsItemSelected(item)
@@ -73,35 +83,58 @@ class SalonListActivity : AppCompatActivity(), SalonListener {
 
     val getResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+            if (it.resultCode == RESULT_OK) {
                 adapter.refresh(app.salonList.findAll())
-
             }
-}
-    override fun onSalonClick(salonentry: SalonModel) {
+        }
+    //registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+    //  if (it.resultCode == RESULT_OK) {
+    //    (binding.recyclerView.adapter)?.notifyItemRangeChanged(
+    //      0,
+    //     app.salonList.findAll().size
+    //   )
+    //  }
+    //  }
+
+    override fun onSalonClick(salonEntry: SalonModel, position: Int) {
         val launcherIntent = Intent(this, SalonActivity::class.java)
-        launcherIntent.putExtra("salon_edit", salonentry)
+        launcherIntent.putExtra("salon_edit", salonEntry)
+        //  this.position = position
         getClickResult.launch(launcherIntent)
     }
 
     private val getClickResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.salonList.findAll().size)
-            }
-        }
-    override fun onSalonDelete(salonentry: SalonModel) {
-        AlertDialog.Builder(this)
-            .setTitle("Delete Salon")
-            .setMessage("Are you sure you want to delete this salon?")
-            .setPositiveButton("Delete") { _, _ ->
-                app.salonList.delete(salonentry)
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == 99 || it.resultCode == RESULT_OK) {
+
+                //  if (it.resultCode == RESULT_OK) {
                 adapter.refresh(app.salonList.findAll())
             }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
+
+        }
+    //      registerForActivityResult(
+    //        ActivityResultContracts.StartActivityForResult()
+    //  ) {
+    //       if (it.resultCode == RESULT_OK) {
+    //            (binding.recyclerView.adapter)?.notifyItemRangeChanged(
+    //                 0,
+    //                  app.salonList.findAll().size
+    //               )
+    //         } else
+    //           if (it.resultCode == 99)
+    //             (binding.recyclerView.adapter)?.notifyItemRemoved(position)
+    //}
+
+
+    //   fun onSalonDelete(salonentry: SalonModel) {
+    //      AlertDialog.Builder(this)
+    //         .setTitle("Delete Salon")
+    //          .setMessage("Are you sure you want to delete this salon?")
+    //           .setPositiveButton("Delete") { _, _ ->
+    //              app.salonList.delete(salonentry)
+    //              adapter.refresh(app.salonList.findAll())
+    //          }
+    //         .setNegativeButton("Cancel", null)
+    //          .show()
+    //  }
 }

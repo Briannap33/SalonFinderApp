@@ -16,28 +16,27 @@ class SalonMemStore : SalonStore {
         return salonList
     }
 
-    override fun create(salon: SalonModel) {
-        salon.id = getNextId()
-        salonList.add(salon)
+    override fun create(salonEntry: SalonModel) {
+        salonEntry.id = getNextId()
+        salonList.add(salonEntry)
         logAll()
     }
 
-    override fun update(salon: SalonModel) {
-        val foundSalon: SalonModel? = salonList.find { s -> s.id == salon.id }
+    override fun update(salonEntry: SalonModel) {
+        val foundSalon: SalonModel? = salonList.find { s -> s.id == salonEntry.id }
         if (foundSalon != null) {
-            foundSalon.name = salon.name
-            foundSalon.description = salon.description
-            foundSalon.image = salon.image
-            foundSalon.lat = salon.lat
-            foundSalon.lng = salon.lng
-            foundSalon.zoom = salon.zoom
+            foundSalon.name = salonEntry.name
+            foundSalon.description = salonEntry.description
+            foundSalon.image = salonEntry.image
+            foundSalon.lat = salonEntry.lat
+            foundSalon.lng = salonEntry.lng
+            foundSalon.zoom = salonEntry.zoom
             logAll()
         }
     }
 
-    override fun delete(salon: SalonModel) {
-        salonList.remove(salon)
-        logAll()
+    override fun delete(salonEntry: SalonModel) {
+        salonList.remove(salonEntry)
     }
 
     override fun deleteAll() {

@@ -56,10 +56,21 @@ class SalonJSONStore(private val context: Context) : SalonStore {
         serialize()
     }
 
-    override fun delete(salon: SalonModel) {
+    override fun delete(salonEntry: SalonModel) {
+        val iterator = salonList.iterator()
+        while (iterator.hasNext()) {
+            val salon = iterator.next()
+            if (salon.id == salonEntry.id) {
+                iterator.remove()
+                break
+            }
+        }
+        serialize()
     }
 
     override fun deleteAll() {
+        salonList.clear()
+        serialize()
     }
 
     private fun serialize() {
@@ -77,7 +88,7 @@ class SalonJSONStore(private val context: Context) : SalonStore {
     }
 }
 
-class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
+class UriParser : JsonDeserializer<Uri>, JsonSerializer<Uri> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,

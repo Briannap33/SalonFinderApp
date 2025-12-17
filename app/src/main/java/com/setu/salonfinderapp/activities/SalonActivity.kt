@@ -22,24 +22,23 @@ import timber.log.Timber.Forest.i
 
 class SalonActivity : AppCompatActivity() {
     var salonEntry = SalonModel()
-   // var location = Location(52.245696, -7.139102, 15f)
+    // var location = Location(52.245696, -7.139102, 15f)
 
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonBinding
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<PickVisualMediaRequest>
+    private lateinit var imageIntentLauncher: ActivityResultLauncher<PickVisualMediaRequest>
 
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
 
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var edit = false
         binding = ActivitySalonBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
-        registerImagePickerCallback()
-        registerMapCallback()
+
 
 
 
@@ -47,26 +46,13 @@ class SalonActivity : AppCompatActivity() {
 
         i("Salon Activity started...")
 
-        binding.salonLocation.setOnClickListener {
-            val location = Location(52.245696, -7.139102, 15f)
-            if (salonEntry.zoom != 0f) {
-                location.lat =  salonEntry.lat
-                location.lng = salonEntry.lng
-                location.zoom = salonEntry.zoom
-            }
-            val launcherIntent = Intent(this, MapActivity::class.java)
-                .putExtra("location", location)
-            mapIntentLauncher.launch(launcherIntent)
-        }
-
-
-
         if (intent.hasExtra("salon_edit")) {
             edit = true
             salonEntry = intent.extras?.getParcelable("salon_edit")!!
             binding.salonName.setText(salonEntry.name)
             binding.description.setText(salonEntry.description)
             binding.btnAdd.setText(R.string.save_salon)
+            i("IMG EDIT :: ${salonEntry.image}")
             Picasso.get()
                 .load(salonEntry.image)
                 .into(binding.salonImage)
@@ -75,14 +61,6 @@ class SalonActivity : AppCompatActivity() {
 
             }
         }
-        binding.chooseImage.setOnClickListener {
-            // showImagePicker(imageIntentLauncher,this)
-            val request = PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                .build()
-            imageIntentLauncher.launch(request)
-        }
-
         binding.btnAdd.setOnClickListener {
             salonEntry.name = binding.salonName.text.toString()
             salonEntry.description = binding.description.text.toString()
@@ -92,48 +70,75 @@ class SalonActivity : AppCompatActivity() {
                     .show()
             } else {
                 if (edit) {
-                    app.salonList.update(salonEntry.copy())
+                    app.salonList.update(salonEntry)
                 } else {
-                    app.salonList.create(salonEntry.copy())
+                    app.salonList.create(salonEntry)
                 }
-                i("add Button Pressed: $salonEntry")
-                setResult(RESULT_OK)
-                finish()
             }
-
+            i("add Button Pressed: $salonEntry")
+            setResult(RESULT_OK)
+            finish()
         }
 
+        binding.chooseImage.setOnClickListener {
+            // showImagePicker(imageIntentLauncher,this)
+            val request = PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                .build()
+            imageIntentLauncher.launch(request)
+        }
+
+        binding.salonLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (salonEntry.zoom != 0f) {
+                location.lat = salonEntry.lat
+                location.lng = salonEntry.lng
+                location.zoom = salonEntry.zoom
+            }
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+        registerImagePickerCallback()
+        registerMapCallback()
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_salon, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.item_delete -> {
+                app.salonList.delete(salonEntry)
+                setResult(99)
+                finish()
+            }
+
             R.id.item_cancel -> {
                 finish()
             }
         }
         return super.onOptionsItemSelected(item)
     }
+
     private fun registerImagePickerCallback() {
         imageIntentLauncher = registerForActivityResult(
             ActivityResultContracts.PickVisualMedia()
         ) {
-            try{
+            try {
                 contentResolver
-                    .takePersistableUriPermission(it!!,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION )
+                    .takePersistableUriPermission(
+                        it!!,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
                 salonEntry.image = it
                 i("IMG :: ${salonEntry.image}")
                 Picasso.get()
                     .load(salonEntry.image)
                     .into(binding.salonImage)
-            }
-            catch(e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -147,18 +152,20 @@ class SalonActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            val location =
+                                result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
                             salonEntry.lat = location.lat
                             salonEntry.lng = location.lng
                             salonEntry.zoom = location.zoom
                         } // end of if
                     }
-                    RESULT_CANCELED -> { } else -> { }
+
+                    RESULT_CANCELED -> {}
+                    else -> {}
                 }
             }
     }
-
 
 
 }

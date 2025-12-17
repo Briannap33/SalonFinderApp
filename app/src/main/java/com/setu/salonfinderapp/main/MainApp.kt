@@ -15,6 +15,6 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         salonList = SalonJSONStore(applicationContext)
-        i("Placemark started")
+        i("Salon started")
     }
 }

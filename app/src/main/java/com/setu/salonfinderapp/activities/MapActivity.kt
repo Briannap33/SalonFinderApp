@@ -37,7 +37,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
         onBackPressedDispatcher.addCallback(this ) {
             val resultIntent = Intent()
             resultIntent.putExtra("location", location)
-            setResult(Activity.RESULT_OK, resultIntent)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 
