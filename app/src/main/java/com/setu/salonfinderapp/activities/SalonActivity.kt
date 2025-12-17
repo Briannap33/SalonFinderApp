@@ -24,6 +24,8 @@ class SalonActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySalonBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
 
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,7 @@ class SalonActivity : AppCompatActivity() {
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
         registerImagePickerCallback()
+        registerMapCallback()
 
 
 
@@ -43,6 +46,12 @@ class SalonActivity : AppCompatActivity() {
         binding.placemarkLocation.setOnClickListener {
             i ("Set Location Pressed")
         }
+        binding.placemarkLocation.setOnClickListener {
+            i("Set Location Pressed")
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+
 
 
         if (intent.hasExtra("salon_edit")) {
@@ -118,6 +127,12 @@ class SalonActivity : AppCompatActivity() {
                 }
             }
     }
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
+    }
+
 }
 
 
