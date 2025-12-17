@@ -4,5 +4,7 @@ interface SalonStore {
     fun findAll(): List<SalonModel>
     fun create(salon: SalonModel)
     fun update(salon: SalonModel)
+    fun delete(salon: SalonModel)
+    fun deleteAll()
 
 }

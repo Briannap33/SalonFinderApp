@@ -8,36 +8,39 @@ private fun getNextId(): Long {
     return lastId++
 }
 
-class SalonMemStore {
+class SalonMemStore : SalonStore {
 
     val salonList = ArrayList<SalonModel>()
 
-    fun findAll(): List<SalonModel> {
+    override fun findAll(): List<SalonModel> {
         return salonList
     }
 
-    fun create(salon: SalonModel) {
+    override fun create(salon: SalonModel) {
         salon.id = getNextId()
         salonList.add(salon)
         logAll()
     }
 
-    fun update(salon: SalonModel) {
+    override fun update(salon: SalonModel) {
         val foundSalon: SalonModel? = salonList.find { s -> s.id == salon.id }
         if (foundSalon != null) {
             foundSalon.name = salon.name
             foundSalon.description = salon.description
             foundSalon.image = salon.image
+            foundSalon.lat = salon.lat
+            foundSalon.lng = salon.lng
+            foundSalon.zoom = salon.zoom
             logAll()
         }
     }
 
-    fun delete(salon: SalonModel) {
+    override fun delete(salon: SalonModel) {
         salonList.remove(salon)
         logAll()
     }
 
-    fun deleteAll() {
+    override fun deleteAll() {
         salonList.clear()
         logAll()
     }

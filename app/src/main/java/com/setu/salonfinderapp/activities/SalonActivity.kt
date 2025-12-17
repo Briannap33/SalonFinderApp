@@ -21,6 +21,8 @@ import timber.log.Timber.Forest.i
 
 class SalonActivity : AppCompatActivity() {
     var salonEntry = SalonModel()
+   // var location = Location(52.245696, -7.139102, 15f)
+
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
@@ -44,11 +46,13 @@ class SalonActivity : AppCompatActivity() {
 
         i("Salon Activity started...")
 
-        binding.placemarkLocation.setOnClickListener {
-            i ("Set Location Pressed")
-        }
-        binding.placemarkLocation.setOnClickListener {
+        binding.salonLocation.setOnClickListener {
             val location = Location(52.245696, -7.139102, 15f)
+            if (salonEntry.zoom != 0f) {
+                location.lat =  salonEntry.lat
+                location.lng = salonEntry.lng
+                location.zoom = salonEntry.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -132,8 +136,24 @@ class SalonActivity : AppCompatActivity() {
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            i("Location == $location")
+                            salonEntry.lat = location.lat
+                            salonEntry.lng = location.lng
+                            salonEntry.zoom = location.zoom
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
+
+
 
 }
 

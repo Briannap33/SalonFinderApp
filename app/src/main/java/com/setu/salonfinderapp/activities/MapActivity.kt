@@ -1,19 +1,25 @@
 package com.setu.salonfinderapp.activities
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.addCallback
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivityMapBinding
 import com.setu.salonfinderapp.models.Location
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback,
+    GoogleMap.OnMarkerDragListener,
+    GoogleMap.OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapBinding
@@ -28,6 +34,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        onBackPressedDispatcher.addCallback(this ) {
+            val resultIntent = Intent()
+            resultIntent.putExtra("location", location)
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -39,6 +52,24 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             .draggable(true)
             .position(loc)
         map.addMarker(options)
+        map.setOnMarkerDragListener(this)
+        map.setOnMarkerClickListener(this)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
+    }
+
+    override fun onMarkerDrag(p0: Marker) {  }
+
+    override fun onMarkerDragEnd(marker: Marker) {
+        location.lat = marker.position.latitude
+        location.lng = marker.position.longitude
+        location.zoom = map.cameraPosition.zoom
+    }
+
+    override fun onMarkerDragStart(p0: Marker) {  }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val loc = LatLng(location.lat, location.lng)
+        marker.snippet = "GPS : $loc"
+        return false
     }
 }
