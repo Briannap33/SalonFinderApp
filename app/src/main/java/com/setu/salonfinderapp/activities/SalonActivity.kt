@@ -102,8 +102,15 @@ class SalonActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (edit) menu.getItem(0).isVisible = true
-        return super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.menu_salon, menu)
+
+        if (edit) {
+            menu.findItem(R.id.item_delete)?.isVisible = true
+        }
+        return true
+
+        //  if (edit) menu.getItem(0).isVisible = true
+        //   return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
