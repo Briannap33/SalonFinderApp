@@ -13,6 +13,7 @@ import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivitySalonBinding
 import com.setu.salonfinderapp.helpers.showImagePicker
 import com.setu.salonfinderapp.main.MainApp
+import com.setu.salonfinderapp.models.Location
 import com.setu.salonfinderapp.models.SalonModel
 import com.squareup.picasso.Picasso
 import timber.log.Timber.Forest.i
@@ -47,8 +48,9 @@ class SalonActivity : AppCompatActivity() {
             i ("Set Location Pressed")
         }
         binding.placemarkLocation.setOnClickListener {
-            i("Set Location Pressed")
+            val location = Location(52.245696, -7.139102, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
 
