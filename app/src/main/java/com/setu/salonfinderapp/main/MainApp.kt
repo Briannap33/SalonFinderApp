@@ -1,6 +1,7 @@
 package com.setu.salonfinderapp.main
 
 import android.app.Application
+import com.setu.salonfinderapp.models.SalonJSONStore
 import com.setu.salonfinderapp.models.SalonMemStore
 import com.setu.salonfinderapp.models.SalonStore
 import timber.log.Timber
@@ -13,7 +14,7 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        salonList = SalonMemStore()
+        salonList = SalonJSONStore(applicationContext)
         i("Placemark started")
     }
 }

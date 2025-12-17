@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import com.setu.salonfinderApp.R
@@ -25,7 +26,7 @@ class SalonActivity : AppCompatActivity() {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivitySalonBinding
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<PickVisualMediaRequest>
 
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
@@ -75,9 +76,13 @@ class SalonActivity : AppCompatActivity() {
             }
         }
         binding.chooseImage.setOnClickListener {
-            i("Select Salon Image")
-            showImagePicker(this, imageIntentLauncher)
+            // showImagePicker(imageIntentLauncher,this)
+            val request = PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                .build()
+            imageIntentLauncher.launch(request)
         }
+
         binding.btnAdd.setOnClickListener {
             salonEntry.name = binding.salonName.text.toString()
             salonEntry.description = binding.description.text.toString()
@@ -115,24 +120,25 @@ class SalonActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
     private fun registerImagePickerCallback() {
-        imageIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when(result.resultCode){
-                    RESULT_OK -> {
-                        if (result.data != null) {
-                            i("Got Result ${result.data!!.data}")
-                            salonEntry.image = result.data!!.data!!
-                            Picasso.get()
-                                .load(salonEntry.image)
-                                .into(binding.salonImage)
-                            binding.chooseImage.setText(R.string.change_salon_image)
-                        } // end of if
-                    }
-                    RESULT_CANCELED -> { } else -> { }
-                }
+        imageIntentLauncher = registerForActivityResult(
+            ActivityResultContracts.PickVisualMedia()
+        ) {
+            try{
+                contentResolver
+                    .takePersistableUriPermission(it!!,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION )
+                salonEntry.image = it
+                i("IMG :: ${salonEntry.image}")
+                Picasso.get()
+                    .load(salonEntry.image)
+                    .into(binding.salonImage)
             }
+            catch(e:Exception){
+                e.printStackTrace()
+            }
+        }
     }
+
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())

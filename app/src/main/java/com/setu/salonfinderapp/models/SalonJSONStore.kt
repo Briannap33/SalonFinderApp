@@ -43,15 +43,23 @@ class SalonJSONStore(private val context: Context) : SalonStore {
 
 
     override fun update(salonEntry: SalonModel) {
-        // todo
+        val salonsList = findAll() as ArrayList<SalonModel>
+        var foundSalon: SalonModel? = salonsList.find { p -> p.id == salonEntry.id }
+        if (foundSalon != null) {
+            foundSalon.name = salonEntry.name
+            foundSalon.description = salonEntry.description
+            foundSalon.image = salonEntry.image
+            foundSalon.lat = salonEntry.lat
+            foundSalon.lng = salonEntry.lng
+            foundSalon.zoom = salonEntry.zoom
+        }
+        serialize()
     }
 
     override fun delete(salon: SalonModel) {
-        TODO("Not yet implemented")
     }
 
     override fun deleteAll() {
-        TODO("Not yet implemented")
     }
 
     private fun serialize() {
