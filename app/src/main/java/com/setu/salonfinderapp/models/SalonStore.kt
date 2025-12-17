@@ -6,5 +6,7 @@ interface SalonStore {
     fun update(salonEntry: SalonModel)
     fun delete(salonEntry: SalonModel)
     fun deleteAll()
+    fun findById(id: Long): SalonModel?
+
 
 }

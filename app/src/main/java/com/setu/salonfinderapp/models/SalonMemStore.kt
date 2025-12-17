@@ -44,6 +44,11 @@ class SalonMemStore : SalonStore {
         logAll()
     }
 
+    override fun findById(id: Long): SalonModel? {
+        val foundSalon: SalonModel? = salonList.find { it.id == id }
+        return foundSalon
+    }
+
     private fun logAll() {
         salonList.forEach { i("$it") }
     }

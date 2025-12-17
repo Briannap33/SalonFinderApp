@@ -30,7 +30,7 @@
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name="com.setu.salonfinderapp.activities.SalonListActivity"
+            android:name="com.setu.salonfinderapp.activities.SalonListView"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.setu.salonfinderapp.activities.SalonActivity"
+            android:name="com.setu.salonfinderapp.activities.SalonView"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

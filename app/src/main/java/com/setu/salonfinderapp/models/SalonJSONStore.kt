@@ -57,20 +57,18 @@ class SalonJSONStore(private val context: Context) : SalonStore {
     }
 
     override fun delete(salonEntry: SalonModel) {
-        val iterator = salonList.iterator()
-        while (iterator.hasNext()) {
-            val salon = iterator.next()
-            if (salon.id == salonEntry.id) {
-                iterator.remove()
-                break
-            }
-        }
+        salonList.removeAll { it.id == salonEntry.id }
         serialize()
     }
 
     override fun deleteAll() {
         salonList.clear()
         serialize()
+    }
+
+    override fun findById(id: Long): SalonModel? {
+        val foundSalon: SalonModel? = salonList.find { it.id == id }
+        return foundSalon
     }
 
     private fun serialize() {

@@ -1,29 +1,23 @@
 package com.setu.salonfinderapp.activities
 
-import android.R.id.edit
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.app.AlertDialog
 import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivitySalonListBinding
-import com.setu.salonfinderApp.databinding.CardSalonBinding
 import com.setu.salonfinderapp.adapters.SalonAdapter
 import com.setu.salonfinderapp.adapters.SalonListener
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
-import timber.log.Timber
+import kotlin.jvm.java
 
 
-class SalonListActivity : AppCompatActivity(), SalonListener {
+class SalonListView : AppCompatActivity(), SalonListener {
 
     lateinit var app: MainApp
     private var position: Int = 0
@@ -48,6 +42,7 @@ class SalonListActivity : AppCompatActivity(), SalonListener {
             app.salonList.findAll().toMutableList(),
             this
         )
+        loadSalons()
         binding.recyclerView.adapter = adapter
 
         //    binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -74,45 +69,67 @@ class SalonListActivity : AppCompatActivity(), SalonListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_add -> {
-                val launcherIntent = Intent(this, SalonActivity::class.java)
-                getResult.launch(launcherIntent)
+                presenter.doAddSalon()
+            }
+
+            R.id.item_map -> {
+                presenter.doShowSalonsMap()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private val getResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == RESULT_OK) {
-                adapter.refresh(app.salonList.findAll())
-
-                //  (binding.recyclerView.adapter)?.notifyItemRangeChanged(
-                //     0,
-                //     app.salonList.findAll().size
-                //  )
-            }
-        }
+    // private val getResult =
+    //     registerForActivityResult(
+    //           ActivityResultContracts.StartActivityForResult()
+    //       ) {
+    //           if (it.resultCode == RESULT_OK) {
+    //               adapter.refresh(app.salonList.findAll())
+//
+    //  (binding.recyclerView.adapter)?.notifyItemRangeChanged(
+    //     0,
+    //     app.salonList.findAll().size
+    //  )
+//            }
+    //       }
 
     override fun onSalonClick(salonEntry: SalonModel, pos: Int) {
-        val launcherIntent = Intent(this, SalonActivity::class.java)
-        launcherIntent.putExtra("salon_edit", salonEntry)
-        position = pos
-        getClickResult.launch(launcherIntent)
+        this.position = position
+        presenter.doEditSalon(salonEntry, this.position)
+    }
+    private fun loadSalons() {
+        binding.recyclerView.adapter = SalonAdapter(presenter.getSalonList(), this)
+        onRefresh()
     }
 
-    private val getClickResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        )
-        {
-            if (it.resultCode == RESULT_OK) {
-                adapter.refresh(app.salonList.findAll())
+    fun onRefresh() {
+        binding.recyclerView.adapter?.
+        notifyItemRangeChanged(0,presenter.getSalonList().size)
+    }
 
-            } else // Deleting
-                if (it.resultCode == 99)
-                    (binding.recyclerView.adapter)?.notifyItemRemoved(position)
-        }
+    fun onDelete(position : Int) {
+        binding.recyclerView.adapter?.notifyItemRemoved(position)
+    }
+}
+
+    // private val getClickResult =
+    //    registerForActivityResult(
+    //          ActivityResultContracts.StartActivityForResult()
+    //    )
+    //      {
+    //        when (it.resultCode) {
+    //              RESULT_OK -> {
+    //                adapter.refresh(app.salonList.findAll())
+    //              }
+//
+    //              99 -> {
+    //                adapter.refresh(app.salonList.findAll())
+    //          }
+    //          }
+    //       }
+    //  private val mapIntentLauncher =
+    //    registerForActivityResult(
+    //         ActivityResultContracts.StartActivityForResult()
+    //       ) { }
 }
 
