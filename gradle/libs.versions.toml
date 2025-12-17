@@ -15,6 +15,7 @@ kotlinPlugin = "2.3.0"
 picasso = "2.71828"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
 playServicesMaps = "19.2.0"
+gson = "2.13.2"
 
 
 [libraries]
@@ -30,6 +31,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
