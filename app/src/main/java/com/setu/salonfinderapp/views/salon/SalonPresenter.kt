@@ -50,8 +50,8 @@ class SalonPresenter(private val view: SalonView) {
     }
 
     fun doDelete() {
-        view.setResult(99)
         app.salonList.delete(salonEntry)
+        view.setResult(99)
         view.finish()
     }
 

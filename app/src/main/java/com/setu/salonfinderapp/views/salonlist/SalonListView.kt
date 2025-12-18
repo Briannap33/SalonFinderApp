@@ -89,6 +89,6 @@ class SalonListView : AppCompatActivity(), SalonListener {
     }
 
     fun onDelete(position: Int) {
-        binding.recyclerView.adapter?.notifyItemRemoved(position)
+        adapter.refresh(presenter.getSalonList())
     }
 }
