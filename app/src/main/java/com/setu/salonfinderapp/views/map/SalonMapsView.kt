@@ -94,6 +94,8 @@ class SalonMapsView : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
         val salonEntry = app.salonList.findById(tag)
         contentBinding.currentTitle.text = salonEntry!!.name
         contentBinding.currentDescription.text = salonEntry.description
+        contentBinding.currentRating.text = "Rated ${salonEntry.rating}"
+
         Picasso.get().load(salonEntry.image).into(contentBinding.currentImage)
         return false
     }
