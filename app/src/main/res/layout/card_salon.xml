@@ -33,7 +33,7 @@
             app:layout_constraintStart_toEndOf="@id/imageIcon"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="A Title" />
+            tools:text="Salon Name" />
 
         <TextView
             android:id="@+id/description"
@@ -44,7 +44,7 @@
             app:layout_constraintStart_toEndOf="@id/imageIcon"
             app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintTop_toBottomOf="@id/salonName"
-            tools:text="A Description" />
+            tools:text="Salon Description" />
 
         <RatingBar
             android:id="@+id/cardRating"
