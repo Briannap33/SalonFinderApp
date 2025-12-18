@@ -13,18 +13,11 @@ import com.squareup.picasso.Picasso
 import timber.log.Timber
 
 class SalonView : AppCompatActivity() {
-    // var salonEntry = SalonModel()
-    // var location = Location(52.245696, -7.139102, 15f)
 
-    // lateinit var app: MainApp
-    private lateinit var binding: ActivitySalonBinding
+    lateinit var binding: ActivitySalonBinding
     private lateinit var presenter: SalonPresenter
     var salonEntry = SalonModel()
-    //   private lateinit var imageIntentLauncher: ActivityResultLauncher<PickVisualMediaRequest>
 
-    // private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-
-    //  var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,30 +31,42 @@ class SalonView : AppCompatActivity() {
 
 
         binding.chooseImage.setOnClickListener {
-            presenter.cacheSalon(
-                binding.salonName.text.toString(),
-                binding.description.text.toString()
-            )
             presenter.doSelectImage()
+
+
         }
+        //  presenter.cacheSalon(
+        //       binding.salonName.text.toString(),
+        //       binding.description.text.toString(),
+        //       binding.ratingBar.rating,
+        //        binding.review.text.toString()
+        //    )
+        //   presenter.doSelectImage()
+        //  }
 
         binding.salonLocation.setOnClickListener {
-            presenter.cacheSalon(
-                binding.salonName.text.toString(),
-                binding.description.text.toString()
-            )
             presenter.doSetLocation()
         }
+
+        //   presenter.cacheSalon(
+        //       binding.salonName.text.toString(),
+        //      binding.description.text.toString(),
+        //      binding.ratingBar.rating,
+        //      binding.review.text.toString()
+        //   )
+        //  presenter.doSetLocation()
+        // }
 
         binding.btnAdd.setOnClickListener {
             if (binding.salonName.text.toString().isEmpty()) {
                 Snackbar.make(binding.root, R.string.enter_salon_name, Snackbar.LENGTH_LONG)
                     .show()
             } else {
-                // presenter.cachePlacemark(binding.placemarkTitle.text.toString(), binding.description.text.toString())
                 presenter.doAddOrSave(
                     binding.salonName.text.toString(),
-                    binding.description.text.toString()
+                    binding.description.text.toString(),
+                    binding.ratingBar.rating,
+                    binding.review.text.toString()
                 )
             }
         }
@@ -72,9 +77,6 @@ class SalonView : AppCompatActivity() {
         val deleteMenu: MenuItem = menu.findItem(R.id.item_delete)
         deleteMenu.isVisible = presenter.edit
         return super.onCreateOptionsMenu(menu)
-
-        //  if (edit) menu.getItem(0).isVisible = true
-        //   return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -93,6 +95,8 @@ class SalonView : AppCompatActivity() {
     fun showSalon(salonEntry: SalonModel) {
         binding.salonName.setText(salonEntry.name)
         binding.description.setText(salonEntry.description)
+        binding.ratingBar.rating = salonEntry.rating
+        binding.review.setText(salonEntry.review)
         binding.btnAdd.setText(R.string.save_salon)
         Picasso.get()
             .load(salonEntry.image)

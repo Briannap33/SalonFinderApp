@@ -33,9 +33,11 @@ class SalonPresenter(private val view: SalonView) {
         registerMapCallback()
     }
 
-    fun doAddOrSave(name: String, description: String) {
+    fun doAddOrSave(name: String, description: String, rating: Float, review: String) {
         salonEntry.name = name
         salonEntry.description = description
+        salonEntry.rating = rating
+        salonEntry.review = review
         if (edit) {
             app.salonList.update(salonEntry)
         } else {
@@ -75,10 +77,12 @@ class SalonPresenter(private val view: SalonView) {
         mapIntentLauncher.launch(launcherIntent)
     }
 
-    fun cacheSalon(name: String, description: String) {
-        salonEntry.name = name
-        salonEntry.description = description
-    }
+    //  fun cacheSalon(name: String, description: String, rating: Float, review: String) {
+    //       salonEntry.name = name
+    //       salonEntry.description = description
+    //       salonEntry.rating = rating
+    //       salonEntry.review = review
+    //  }
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher = view.registerForActivityResult(

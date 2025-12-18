@@ -1,5 +1,6 @@
 package com.setu.salonfinderapp.models
 
+import timber.log.Timber
 import timber.log.Timber.Forest.i
 
 private var lastId = 0L
@@ -23,6 +24,7 @@ class SalonMemStore : SalonStore {
     }
 
     override fun update(salonEntry: SalonModel) {
+
         val foundSalon: SalonModel? = salonList.find { s -> s.id == salonEntry.id }
         if (foundSalon != null) {
             foundSalon.name = salonEntry.name
@@ -31,6 +33,8 @@ class SalonMemStore : SalonStore {
             foundSalon.lat = salonEntry.lat
             foundSalon.lng = salonEntry.lng
             foundSalon.zoom = salonEntry.zoom
+            foundSalon.rating = salonEntry.rating
+            foundSalon.review = salonEntry.review
             logAll()
         }
     }
