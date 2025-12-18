@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.SearchView
 import com.setu.salonfinderApp.R
 import com.setu.salonfinderApp.databinding.ActivitySalonListBinding
 import com.setu.salonfinderapp.main.MainApp
@@ -60,7 +61,29 @@ class SalonListView : AppCompatActivity(), SalonListener {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu)
+
+        val searchItem = menu.findItem(R.id.item_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.queryHint = "Search salons..."
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter.filter?.filter(query)
+                return false
+            }
+
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter?.filter(newText)
+                return true
+            }
+        })
+
+        return true
+
+        //   menuInflater.inflate(R.menu.menu_main, menu)
+        // return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

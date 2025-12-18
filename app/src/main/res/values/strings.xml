@@ -14,6 +14,7 @@
     <string name="title_activity_map">MapActivity</string>
     <string name="menu_deleteSalon">Delete</string>
     <string name="enter_salon_name">Please enter a salon name</string>
+    <string name="search">Search salons</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
