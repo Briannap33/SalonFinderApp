@@ -38,7 +38,9 @@ class SalonListView : AppCompatActivity(), SalonListener {
             app.salonList.findAll().toMutableList(),
             this
         )
-        loadSalons()
+        binding.recyclerView.adapter = adapter
+
+        //     loadSalons()
 
         //    binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -47,8 +49,8 @@ class SalonListView : AppCompatActivity(), SalonListener {
                 .setTitle("Delete All Salons")
                 .setMessage("Are you sure you want to delete all salons in your list?")
                 .setPositiveButton("Delete") { _, _ ->
-                    app.salonList.deleteAll()
-                    adapter.refresh(app.salonList.findAll())
+                    presenter.doDeleteAll()
+
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
@@ -76,18 +78,14 @@ class SalonListView : AppCompatActivity(), SalonListener {
 
 
     override fun onSalonClick(salonEntry: SalonModel, pos: Int) {
-        this.position = position
-        presenter.doEditSalon(salonEntry, this.position)
+        this.position = pos
+        presenter.doEditSalon(salonEntry, pos)
     }
 
-    private fun loadSalons() {
-        binding.recyclerView.adapter =
-            SalonAdapter(presenter.getSalonList() as MutableList<SalonModel>, this)
-        onRefresh()
-    }
 
     fun onRefresh() {
-        binding.recyclerView.adapter?.notifyItemRangeChanged(0, presenter.getSalonList().size)
+        adapter.refresh(presenter.getSalonList())
+
     }
 
     fun onDelete(position: Int) {

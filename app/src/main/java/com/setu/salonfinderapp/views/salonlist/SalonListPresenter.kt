@@ -57,4 +57,10 @@ class SalonListPresenter(val view: SalonListView) {
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { }
     }
+
+    fun doDeleteAll() {
+        app.salonList.deleteAll()
+        view.onRefresh()
+    }
+
 }
