@@ -16,7 +16,7 @@
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="#AB71D9"
             android:fitsSystemWindows="true"
             app:elevation="0dip"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -35,14 +35,15 @@
             android:fillViewport="true">
 
             <LinearLayout
+                android:background="#E4C8E6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/salonName"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_width="153dp"
+                    android:layout_height="59dp"
                     android:layout_margin="8dp"
                     android:autofillHints="hint"
                     android:hint="@string/hint_salonName"
@@ -67,7 +68,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -105,7 +106,7 @@
                     android:padding="8dp"
                     android:stateListAnimator="@null"
                     android:text="@string/button_addSalon"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
 
                 <Button
@@ -140,9 +141,7 @@
                     android:text="@string/button_location"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
-
             </LinearLayout>
         </ScrollView>
-
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
