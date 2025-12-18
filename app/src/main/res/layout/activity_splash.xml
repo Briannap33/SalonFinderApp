@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    android:background="#E4C8E6">
 
     <ImageView
         android:id="@+id/splashImage"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="170dp"
+        android:layout_height="150dp"
         android:contentDescription="App Logo"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintBottom_toTopOf="@id/splashText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/splash_image"
+        tools:layout_editor_absoluteX="122dp"
+        tools:layout_editor_absoluteY="165dp" />
 
     <TextView
         android:id="@+id/splashText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Salon Finder Loading..."
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_width="271dp"
+        android:layout_height="89dp"
+        android:text="Welcome to SalonFinder"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/splashImage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="328dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="247dp"
+        android:layout_height="47dp"
+        android:text="Please Wait...."
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        tools:layout_editor_absoluteX="82dp"
+        tools:layout_editor_absoluteY="428dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
