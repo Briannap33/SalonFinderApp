@@ -1,10 +1,9 @@
-package com.setu.salonfinderapp.adapters
+package com.setu.salonfinderapp.views.salonlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.setu.salonfinderApp.databinding.CardSalonBinding
-import com.setu.salonfinderapp.main.MainApp
 import com.squareup.picasso.Picasso
 import com.setu.salonfinderapp.models.SalonModel
 
@@ -32,7 +31,6 @@ class SalonAdapter(
     }
 
     override fun getItemCount(): Int = salonList.size
-
     fun refresh(newList: List<SalonModel>) {
         salonList.clear()
         salonList.addAll(newList)

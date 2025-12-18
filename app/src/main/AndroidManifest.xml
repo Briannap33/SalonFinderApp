@@ -17,7 +17,7 @@
         android:theme="@style/Theme.salon"
         tools:targetApi="34">
         <activity
-            android:name="com.setu.salonfinderapp.activities.SalonMapsActivity"
+            android:name="com.setu.salonfinderapp.views.map.SalonMapsView"
             android:exported="false"
             android:theme="@style/Theme.salon" />
 
@@ -26,11 +26,11 @@
             android:value="@string/MAPS_API_KEY" />
 
         <activity
-            android:name="com.setu.salonfinderapp.activities.MapActivity"
+            android:name="com.setu.salonfinderapp.views.editlocation.EditLocationView"
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
-            android:name="com.setu.salonfinderapp.activities.SalonListView"
+            android:name="com.setu.salonfinderapp.views.salonlist.SalonListView"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.setu.salonfinderapp.activities.SalonView"
+            android:name="com.setu.salonfinderapp.views.salon.SalonView"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

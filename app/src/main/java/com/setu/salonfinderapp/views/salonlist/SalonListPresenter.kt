@@ -1,11 +1,13 @@
-package com.setu.salonfinderapp.activities
+package com.setu.salonfinderapp.views.salonlist
 
-import android.app.Activity.RESULT_OK
+import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.SalonModel
+import com.setu.salonfinderapp.views.map.SalonMapsView
+import com.setu.salonfinderapp.views.salon.SalonView
 
 class SalonListPresenter(val view: SalonListView) {
 
@@ -35,7 +37,7 @@ class SalonListPresenter(val view: SalonListView) {
     }
 
     fun doShowSalonsMap() {
-        val launcherIntent = Intent(view, SalonMapsActivity::class.java)
+        val launcherIntent = Intent(view, SalonMapsView::class.java)
         mapIntentLauncher.launch(launcherIntent)
     }
 
@@ -44,7 +46,7 @@ class SalonListPresenter(val view: SalonListView) {
             view.registerForActivityResult(
                 ActivityResultContracts.StartActivityForResult()
             ) {
-                if (it.resultCode == RESULT_OK) view.onRefresh()
+                if (it.resultCode == Activity.RESULT_OK) view.onRefresh()
                 else // Deleting
                     if (it.resultCode == 99) view.onDelete(position)
             }

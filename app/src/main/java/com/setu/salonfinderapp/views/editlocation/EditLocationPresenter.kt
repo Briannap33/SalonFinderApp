@@ -1,4 +1,4 @@
-package com.setu.salonfinderapp.activities
+package com.setu.salonfinderapp.views.editlocation
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.setu.salonfinderapp.views.editlocation.EditLocationView
 import com.setu.salonfinderapp.models.Location
 
 class EditLocationPresenter(val view: EditLocationView) {
@@ -21,7 +22,7 @@ class EditLocationPresenter(val view: EditLocationView) {
     fun initMap(map: GoogleMap) {
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
-            .title("Placemark")
+            .title("Salon")
             .snippet("GPS : $loc")
             .draggable(true)
             .position(loc)

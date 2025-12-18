@@ -1,4 +1,4 @@
-package com.setu.salonfinderapp.activities
+package com.setu.salonfinderapp.views.salon
 
 import android.app.Activity
 import android.content.Intent
@@ -6,10 +6,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.setu.salonfinderapp.views.salon.SalonView
 import com.setu.salonfinderapp.main.MainApp
 import com.setu.salonfinderapp.models.Location
 import com.setu.salonfinderapp.models.SalonModel
-import com.setu.salonfinderapp.activities.SalonView
+import com.setu.salonfinderapp.views.editlocation.EditLocationView
 import timber.log.Timber
 
 class SalonPresenter(private val view: SalonView) {
@@ -74,7 +75,7 @@ class SalonPresenter(private val view: SalonView) {
         mapIntentLauncher.launch(launcherIntent)
     }
 
-    fun cachePlacemark(name: String, description: String) {
+    fun cacheSalon(name: String, description: String) {
         salonEntry.name = name
         salonEntry.description = description
     }

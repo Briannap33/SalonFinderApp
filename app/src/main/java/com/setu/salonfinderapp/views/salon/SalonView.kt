@@ -1,4 +1,4 @@
-package com.setu.salonfinderapp.activities
+package com.setu.salonfinderapp.views.salon
 
 import android.net.Uri
 import android.os.Bundle
@@ -36,40 +36,6 @@ class SalonView : AppCompatActivity() {
 
         presenter = SalonPresenter(this)
 
-
-        //  if (intent.hasExtra("salon_edit")) {
-        //    edit = true
-        //      salonEntry = intent.extras?.getParcelable("salon_edit")!!
-        //        binding.salonName.setText(salonEntry.name)
-        //        binding.description.setText(salonEntry.description)
-        //      binding.btnAdd.setText(R.string.save_salon)
-        //        Timber.Forest.i("IMG EDIT :: ${salonEntry.image}")
-        //       Picasso.get()
-        //         .load(salonEntry.image)
-        //           .into(binding.salonImage)
-        //       if (salonEntry.image != Uri.EMPTY) {
-        //           binding.chooseImage.setText(R.string.change_salon_image)
-
-        //     }
-        //    }
-        //       binding.btnAdd.setOnClickListener {
-        //           salonEntry.name = binding.salonName.text.toString()
-        //          salonEntry.description = binding.description.text.toString()
-//
-        //           if (salonEntry.name.isEmpty()) {
-        //               Snackbar.make(it, getString(R.string.app_name), Snackbar.LENGTH_LONG)
-        //                  .show()
-        //           } else {
-        //               if (edit) {
-        //                   app.salonList.update(salonEntry.copy())
-        //               } else {
-        //                  app.salonList.create(salonEntry.copy())
-        //             }
-        //          }
-        //          Timber.Forest.i("add Button Pressed: $salonEntry")
-        //          setResult(RESULT_OK)
-        //           finish()
-        //     }
 
         binding.chooseImage.setOnClickListener {
             presenter.cacheSalon(

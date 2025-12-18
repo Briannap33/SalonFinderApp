@@ -13,14 +13,13 @@
     <string name="button_location">Set Salon Location</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="menu_deleteSalon">Delete</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="enter_salon_name">Please enter a salon name</string>
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
     <string name="lorem_ipsum">
-        
+
     </string>
 
 
