@@ -10,33 +10,50 @@
         android:id="@+id/splashImage"
         android:layout_width="170dp"
         android:layout_height="150dp"
+        android:layout_marginTop="165dp"
+        android:layout_marginEnd="121dp"
+        android:layout_marginBottom="416dp"
         android:contentDescription="App Logo"
         android:src="@drawable/splash_image"
-        tools:layout_editor_absoluteX="122dp"
-        tools:layout_editor_absoluteY="165dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/splashText"
         android:layout_width="271dp"
         android:layout_height="89dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="72dp"
         android:text="Welcome to SalonFinder"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="70dp"
-        tools:layout_editor_absoluteY="328dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splashImage" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="247dp"
         android:layout_height="47dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="84dp"
         android:text="Please Wait...."
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textAlignment="center"
-        tools:layout_editor_absoluteX="82dp"
-        tools:layout_editor_absoluteY="428dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splashText"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
